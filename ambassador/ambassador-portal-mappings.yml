@@ -1,0 +1,30 @@
+######################################################################
+# Configure DevPortal
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  # This Mapping name is referenced by convention, it's important to leave as-is.
+  name: ambassador-devportal
+  namespace: ambassador
+  labels:
+    product: aes
+spec:
+  prefix: /docs/
+  host: ambassador.mydomain.com
+  rewrite: "/docs/"
+  service: "127.0.0.1:8500"
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  # This Mapping name is referenced by convention, it's important to leave as-is.
+  name: ambassador-devportal-api
+  namespace: ambassador
+  labels:
+    product: aes
+spec:
+  prefix: /openapi/
+  host: ambassador.mydomain.com
+  rewrite: ""
+  service: "127.0.0.1:8500"

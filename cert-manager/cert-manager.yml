@@ -1,0 +1,36 @@
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: cert-manager
+  namespace: cert-manager
+spec:
+  releaseName: cert-manager
+  chart:
+    repository: https://charts.jetstack.io
+    name: cert-manager
+    version: 0.12.0
+  values:
+    webhook.enabled: true
+
+
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+  namespace: cert-manager
+spec:
+  acme:
+    email: certs@mydomain.com
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+      - dns01:
+          route53:
+            region: eu-west-1
+            accessKeyID: FIXME
+            secretAccessKeySecretRef:
+              name: prod-route53-credentials-secret
+              key: secret-access-key
